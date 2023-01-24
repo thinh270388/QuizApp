@@ -19,7 +19,6 @@ namespace PortalApp.Extensions
                 .SingleOrDefault(x => x.Type == JwtClaimTypes.Subject);
             return claim?.Value;
         }
-
         public static string GetEmail(this ClaimsPrincipal claimsPrincipal)
         {
             var claim = ((ClaimsIdentity)claimsPrincipal.Identity)
@@ -31,7 +30,14 @@ namespace PortalApp.Extensions
         {
             var claim = ((ClaimsIdentity)claimsPrincipal.Identity)
                 .Claims
-                .SingleOrDefault(x => x.Type == ClaimTypes.Name);
+                .SingleOrDefault(x => x.Type == "name");
+            return claim?.Value;
+        }
+        public static string GetUNameClaim(this ClaimsPrincipal claimsPrincipal)
+        {
+            var claim = ((ClaimsIdentity)claimsPrincipal.Identity)
+                .Claims
+                .SingleOrDefault(x => x.Type == "uname");
             return claim?.Value;
         }
     }

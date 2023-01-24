@@ -1,7 +1,7 @@
 ﻿@page "/exam-result.html"
 @model PortalApp.Pages.Exams.ExamResultModel
 @{
-    ViewData["Title"] = "Exam Result";
+    ViewData["Title"] = "Kết quả";
 }
 <!-- ================================
     START BREADCRUMB AREA
@@ -11,10 +11,10 @@
         <div class="container">
             <div class="breadcrumb-content">
                 <ul class="quiz-nav d-flex flex-wrap align-items-center">
-                    <li><a href="/exams.html"><i class="la la-arrow-left mr-2"></i>Quay lại danh sách Bài kiểm tra</a></li>
+                    <li><a href="/exams.html"><i class="la la-arrow-left mr-2"></i>Quay lại Bài kiểm tra</a></li>
                     <li>
                         <div class="d-flex align-items-center">
-                            <a href="course-details.html">
+                            <a href="/exams.html">
                                 <img src="/images/angular.png" alt="Angular thumbnail">
                             </a>
                             <p>
@@ -34,8 +34,8 @@
                     <h2 class="section__title text-white pt-2">Kết quả: @(Model.ExamResult.Passed == true ? "Đạt yêu cầu" : "Chưa đạt yêu cầu")</h2>
                 </div>
                 <div class="breadcrumb-btn-box pt-30px">
-                    <a href="/exam-details.html?id=@Model.Exam.Id" class="btn theme-btn theme-btn-transparent text-white-50 mr-2 mb-2">Làm lại bài kiểm tra</a>
-                    <a href="/exam-histories.html" class="btn theme-btn theme-btn-transparent text-white-50 mb-2">Xem bài kiểm tra đã làm</a>
+                    <a href="/exam-details.html?id=@Model.Exam.Id" class="btn theme-btn theme-btn-transparent text-white-50 mr-2 mb-2">Làm lại</a>
+                    <a href="/exam-histories.html" class="btn theme-btn theme-btn-transparent text-white-50 mb-2">Xem lịch sử</a>
                 </div>
             </div>
         </div><!-- end container -->

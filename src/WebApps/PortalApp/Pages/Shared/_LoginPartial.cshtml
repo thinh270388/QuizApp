@@ -188,8 +188,8 @@
                                     <img class="rounded-full img-fluid" src="/images/small-avatar-1.jpg" alt="Avatar image">
                                 </a>
                                 <div class="ml-2">
-                                    <h4><a href="/profile/dasboard.html" class="text-black">@User.Identity.Name</a></h4>
-                                    <span class="d-block fs-14 lh-20">@User.GetEmail()</span>
+                                    <h4><a href="/profile/dasboard.html" class="text-black">@User.GetUNameClaim()</a></h4>
+                                    <span class="d-block fs-14 lh-20">@User.GetFullName()</span>
                                 </div>
                             </li>
                             <li>
@@ -218,7 +218,7 @@
                             </li>
                             <li>
                                 <ul class="generic-list-item">
-                                    <li>
+                                  @*  <li>
                                         <a href="my-courses.html">
                                             <i class="la la-file-video-o mr-1"></i> My courses
                                         </a>
@@ -273,14 +273,14 @@
                                         <a href="#">
                                             <i class="la la-question mr-1"></i> Help
                                         </a>
-                                    </li>
+                                    </li>*@
                                     <li>
                                         <a href="logout.html">
                                             <i class="la la-power-off mr-1"></i> Đăng xuất
                                         </a>
                                     </li>
                                     <li><div class="section-block"></div></li>
-                                    <li>
+     @*                               <li>
                                         <a href="#" class="position-relative">
                                             <span class="fs-17 font-weight-semi-bold d-block">Aduca for Business</span>
                                             <span class="lh-20 d-block fs-14 text-gray">Bring learning to your company</span>
@@ -288,7 +288,7 @@
                                                 <i class="la la-external-link"></i>
                                             </span>
                                         </a>
-                                    </li>
+                                    </li>*@
                                 </ul>
                             </li>
                         </ul>

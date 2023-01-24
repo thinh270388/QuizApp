@@ -3,6 +3,9 @@
     "Roles": [
       {
         "Name": "Administrator"
+      },
+      {
+        "Name": "Staff"
       }
     ],
     "Users": [
@@ -12,6 +15,10 @@
         "Email": "thcsthptbacai@ninhthuan.edu.vn",
         "Roles": [ "Administrator" ],
         "Claims": [
+          {
+            "Type": "uname",
+            "Value": "admin"
+          },
           {
             "Type": "name",
             "Value": "THCS, THPT Bác Ái"
@@ -33,8 +40,12 @@
         "Roles": [ "Administrator" ],
         "Claims": [
           {
+            "Type": "uname",
+            "Value": "thinh270388"
+          },
+          {
             "Type": "name",
-            "Value": "Lê Phúc Nhã Thịnh"
+            "Value": "Lê Thịnh"
           },
           {
             "Type": "given_name",
@@ -53,8 +64,12 @@
         "Roles": [ "Administrator" ],
         "Claims": [
           {
+            "Type": "uname",
+            "Value": "quanghung2008"
+          },
+          {
             "Type": "name",
-            "Value": "Đậu Quang Hưng"
+            "Value": "Quang Hưng"
           },
           {
             "Type": "given_name",
@@ -73,8 +88,12 @@
         "Roles": [ "Administrator" ],
         "Claims": [
           {
+            "Type": "uname",
+            "Value": "quanghung2008"
+          },
+          {
             "Type": "name",
-            "Value": "Nguyễn Hồ Thiện Tâm"
+            "Value": "Thiện Tâm"
           },
           {
             "Type": "given_name",
@@ -83,6 +102,78 @@
           {
             "Type": "family_name",
             "Value": "Tâm"
+          }
+        ]
+      },
+      {
+        "Username": "demo1",
+        "Password": "Demo1@123",
+        "Email": "demo1@gmail.com",
+        "Roles": [ "Staff" ],
+        "Claims": [
+          {
+            "Type": "uname",
+            "Value": "demo1"
+          },
+          {
+            "Type": "name",
+            "Value": "Tài khoản 1"
+          },
+          {
+            "Type": "given_name",
+            "Value": "Demo"
+          },
+          {
+            "Type": "family_name",
+            "Value": "1"
+          }
+        ]
+      },
+      {
+        "Username": "demo2",
+        "Password": "Demo2@123",
+        "Email": "demo2@gmail.com",
+        "Roles": [ "Staff" ],
+        "Claims": [
+          {
+            "Type": "uname",
+            "Value": "demo2"
+          },
+          {
+            "Type": "name",
+            "Value": "Tài khoản 2"
+          },
+          {
+            "Type": "given_name",
+            "Value": "Demo"
+          },
+          {
+            "Type": "family_name",
+            "Value": "2"
+          }
+        ]
+      },
+      {
+        "Username": "demo3",
+        "Password": "Demo3@123",
+        "Email": "demo3@gmail.com",
+        "Roles": [ "Staff" ],
+        "Claims": [
+          {
+            "Type": "uname",
+            "Value": "demo3"
+          },
+          {
+            "Type": "name",
+            "Value": "Tài khoản 3"
+          },
+          {
+            "Type": "given_name",
+            "Value": "Demo"
+          },
+          {
+            "Type": "family_name",
+            "Value": "3"
           }
         ]
       }
