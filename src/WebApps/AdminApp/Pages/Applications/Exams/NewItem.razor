@@ -1,0 +1,164 @@
+﻿@page "/app/exams/new"
+@using Examination.Shared.Questions
+@using Examination.Shared.Exams
+@using Examination.Shared.Categories
+@using Examination.Shared.Enums
+@using Microsoft.Extensions.Logging
+@inject IExamService ExamService
+@inject ICategoryService CategoryService
+@inject ILogger<NewItem> Logger
+@inject ISnackbar Snackbar
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+
+<MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">Thêm mới bài kiểm tra</MudText>
+
+<EditForm Model="model" OnValidSubmit="OnValidSubmit">
+    <MudPaper>
+        <MudGrid Style="margin:0">
+            <MudItem xs="6" md="6" sm="12">
+                <DataAnnotationsValidator />
+                <MudTextField Label="Tên bài kiểm tra" Required="true" RequiredError="Tên bài kiểm tra là bắt buộc"
+                              @bind-Value="model.Name" For="@(() => model.Name)" />
+                <MudTextField Label="Mô tả ngắn" @bind-Value="model.ShortDesc" For="@(() => model.ShortDesc)" />
+                <MudTextField Label="Nội dung" Required="true" RequiredError="Nội dung là bắt buộc" Lines="5"
+                              @bind-Value="model.Content" For="@(() => model.Content)" />
+
+                <MudTextField Label="Thời gian làm bài (mm:ss)" Required="true" RequiredError="Thời gian làm bài là bắt buộc"
+                              @bind-Value="model.Duration" For="@(() => model.Duration)" />
+
+                <MudNumericField Label="Số câu hỏi" Required="true" RequiredError="Số câu hỏi là bắt buộc"
+                                 @bind-Value="model.NumberOfQuestions" For="@(() => model.NumberOfQuestions)" />
+
+                <MudNumericField Label="Số câu tối thiểu đạt yêu cầu" Required="true" RequiredError="Số câu tối thiểu đạt yêu cầu là bắt buộc"
+                                 @bind-Value="model.NumberOfQuestionCorrectForPass" For="@(() => model.NumberOfQuestionCorrectForPass)" />
+
+                <MudCheckBox Label="Tính thời gian"
+                             @bind-Checked="@model.IsTimeRestricted" For="@(() => model.IsTimeRestricted)"></MudCheckBox>
+
+                <MudCheckBox Label="Tự động tạo câu hỏi"
+                             @bind-Checked="@model.AutoGenerateQuestion" For="@(() => model.AutoGenerateQuestion)"></MudCheckBox>
+
+                <MudCheckBox Label="Bài kiểm tra mới"
+                             @bind-Checked="@model.Latest" For="@(() => model.Latest)"></MudCheckBox>
+
+                <MudText>Cấp độ</MudText>
+                <MudRadioGroup @bind-SelectedOption="model.Level" Required="true" RequiredError="Cấp độ là bắt buộc">
+                    <MudRadio Option="Level.Easy" Color="Color.Primary">Dễ</MudRadio>
+                    <MudRadio Option="Level.Medium" Color="Color.Warning">Trung bình</MudRadio>
+                    <MudRadio Option="Level.Difficult" Color="Color.Error">Khó</MudRadio>
+
+                </MudRadioGroup>
+
+                <MudSelect Label="Danh mục" @bind-Value="model.CategoryId" Required="true" RequiredError="Danh mục là bắt buộc"
+                           OffsetY="true" AdornmentIcon="@Icons.Material.Filled.Category" AdornmentColor="Color.Primary">
+                    @foreach (var item in categories)
+                    {
+                        <MudSelectItem Value="item.Id">@item.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="6" md="6" sm="12">
+                <MudText>Danh sách câu hỏi</MudText>
+                <MudButton ButtonType="ButtonType.Button" OnClick="AddQuestions" Variant="Variant.Filled" Color="Color.Success">Thêm mới</MudButton>
+
+                <MudTable Items="@questions" Hover="true" Breakpoint="Breakpoint.Sm"
+                          Loading="@loading" Context="item" LoadingProgressColor="Color.Info">
+                    <HeaderContent>
+                        <MudTh>Nội dung câu hỏi</MudTh>
+                        <MudTh>Mức độ</MudTh>
+                        <MudTh>Thao tác</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Content">@item.Content</MudTd>
+                        <MudTd DataLabel="Correct">@item.Level</MudTd>
+                        <MudTd>
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="async ()=>await OnDelete(item.Id)" Variant="Variant.Filled" Color="Color.Error" Size="Size.Large" Class="ma-2" />
+                        </MudTd>
+                    </RowTemplate>
+                </MudTable>
+            </MudItem>
+            <MudItem sm="12">
+                <MudToolBar>
+                    <MudSpacer />
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled"
+                               Color="Color.Primary" Class="ml-auto">Lưu Lại</MudButton>
+                </MudToolBar>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+</EditForm>
+
+<MudOverlay Visible="loading" DarkBackground="true" Absolute="true">
+    <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
+</MudOverlay>
+@code {
+    //bool success;
+    bool loading = false;
+    [Parameter]
+    public string Id { set; get; }
+    CreateExamRequest model = new CreateExamRequest();
+    List<CategoryDto> categories = new List<CategoryDto>();
+    HashSet<QuestionDto> questions = new HashSet<QuestionDto>();
+
+    protected async override Task OnInitializedAsync()
+    {
+        var result = await CategoryService.GetAllCategoriesAsync();
+        if (result.IsSuccessed)
+        {
+            categories = result.ResultObj;
+        }
+    }
+    private async Task AddQuestions()
+    {
+        var parameters = new DialogParameters
+        {
+            ["SelectedQuestions"] = questions
+        };
+        var dialog = DialogService.Show<QuestionDialog>("Thêm câu trả lời", parameters,
+            new DialogOptions()
+            {
+                MaxWidth = MaxWidth.Large
+            });
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            questions = result.Data as HashSet<QuestionDto>;
+            model.Questions = questions.ToList();
+        }
+    }
+    private async Task OnValidSubmit(EditContext context)
+    {
+        loading = true;
+        var result = await ExamService.CreateAsync(model);
+        if (result.IsSuccessed)
+        {
+            Snackbar.Add("Tạo mục mới thành công", Severity.Success);
+            NavigationManager.NavigateTo(UrlConstants.Exams);
+        }
+        else
+        {
+            Snackbar.Add(result.Message, Severity.Error);
+        }
+        loading = false;
+        StateHasChanged();
+    }
+
+    public async Task OnDelete(string id)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Bạn có thực sự muốn xóa những bản ghi này? Quá trình này không thể hoàn tác.");
+        parameters.Add("ButtonText", "Xóa");
+        parameters.Add("Color", Color.Error);
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = DialogService.Show<ConfirmationDialog>("Xóa", parameters, options);
+        var result = await dialog.Result;
+        if (!result.Cancelled)
+        {
+            questions.RemoveWhere(x => x.Id == id);
+        }
+    }
+} 

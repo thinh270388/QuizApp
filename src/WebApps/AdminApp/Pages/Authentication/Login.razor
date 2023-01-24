@@ -1,0 +1,72 @@
+﻿@page "/"
+@page "/auth/login"
+@layout LoginLayout
+@inject NavigationManager NavigationManager;
+@inject IAuthService AuthService;
+
+<EditForm Model="@model" OnValidSubmit="HandleLogin">
+
+    <MudText Typo="Typo.h4" GutterBottom="true">Đăng nhập</MudText>
+
+    <MudText>Không có một tài khoản? <MudLink Href="/pages/authentication/register">Đăng ký</MudLink></MudText>
+    @if (!string.IsNullOrEmpty(errorMsg))
+    {
+        <MudText Color="@Color.Error">@errorMsg</MudText>
+    }
+    <MudTextField T="string"  @bind-Value="model.UserName" Label="Tên đăng nhập" Variant="Variant.Outlined" Class="my-6"></MudTextField>
+
+    <MudTextField @bind-Value="@model.Password" Label="Mật khẩu" Variant="Variant.Outlined" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="TogglePasswordVisibility" />
+
+    <div Class="d-flex justify-space-between align-center">
+        <MudCheckBox T="bool" Label="Ghi nhớ?" Color="Color.Primary" Class="ml-n1 my-3"></MudCheckBox>
+        <MudLink Href="/auth/forgot-password">Quên mật khẩu?</MudLink>
+    </div>
+
+
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="HandleLogin" Size="Size.Large" FullWidth="true">Đăng nhập</MudButton>
+</EditForm>
+<MudOverlay Visible="loading" DarkBackground="true" Absolute="true">
+    <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
+</MudOverlay>
+@code {
+    private bool loading = false;
+    LoginRequest model = new LoginRequest();
+    string errorMsg = string.Empty;
+
+    string Password { get; set; } = "BMWvBPJXZu";
+
+    bool PasswordVisibility;
+    InputType PasswordInput = InputType.Password;
+    string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    async Task HandleLogin()
+    {
+        loading = true;
+        var result = await AuthService.LoginAsync(model);
+        if (result.IsError == false)
+        {
+            NavigationManager.NavigateTo(UrlConstants.Dashboard);
+        }
+        else
+        {
+            errorMsg = "Tên đăng nhập hoặc mật khẩu không chính xác";
+        }
+        loading = false;
+    }
+
+    void TogglePasswordVisibility()
+    {
+        @if (PasswordVisibility)
+        {
+            PasswordVisibility = false;
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else
+        {
+            PasswordVisibility = true;
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
+    }
+}

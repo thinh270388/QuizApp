@@ -1,0 +1,17 @@
+﻿@page "/auth/forgot-password"
+@layout LoginLayout
+
+
+
+<MudText Typo="Typo.h4" GutterBottom="true">Quên mật khẩu?</MudText>
+
+<MudText Typo="Typo.subtitle2">Nhập địa chỉ email được liên kết với tài khoản của bạn và bạn sẽ nhận được email chứa liên kết để đặt lại mật khẩu của mình.</MudText>
+
+<MudTextField T="string" Label="E-mail" Variant="Variant.Outlined" Class="my-4"></MudTextField>
+
+<MudButton Variant="Variant.Filled" Color="Color.Primary" Link="/pages/authentication/reset-password" Size="Size.Large" FullWidth="true" Class="mt-3">Đặt lại mật khẩu</MudButton>
+
+
+@code {
+
+}

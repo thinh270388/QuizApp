@@ -1,0 +1,91 @@
+﻿{
+  "IdentityData": {
+    "Roles": [
+      {
+        "Name": "Administrator"
+      }
+    ],
+    "Users": [
+      {
+        "Username": "admin",
+        "Password": "Admin@123$",
+        "Email": "thcsthptbacai@ninhthuan.edu.vn",
+        "Roles": [ "Administrator" ],
+        "Claims": [
+          {
+            "Type": "name",
+            "Value": "THCS, THPT Bác Ái"
+          },
+          {
+            "Type": "given_name",
+            "Value": "THCS, THPT"
+          },
+          {
+            "Type": "family_name",
+            "Value": "Bác Ái"
+          }
+        ]
+      },
+      {
+        "Username": "thinh270388",
+        "Password": "Admin@123$",
+        "Email": "nhathinh.thcsthptbacai@ninhthuan.edu.vn",
+        "Roles": [ "Administrator" ],
+        "Claims": [
+          {
+            "Type": "name",
+            "Value": "Lê Phúc Nhã Thịnh"
+          },
+          {
+            "Type": "given_name",
+            "Value": "Lê Phúc Nhã"
+          },
+          {
+            "Type": "family_name",
+            "Value": "Thịnh"
+          }
+        ]
+      },
+      {
+        "Username": "quanghung2008",
+        "Password": "Admin@123$",
+        "Email": "quanghung.thcsthptbacai@ninhthuan.edu.vn",
+        "Roles": [ "Administrator" ],
+        "Claims": [
+          {
+            "Type": "name",
+            "Value": "Đậu Quang Hưng"
+          },
+          {
+            "Type": "given_name",
+            "Value": "Đậu Quang"
+          },
+          {
+            "Type": "family_name",
+            "Value": "Hưng"
+          }
+        ]
+      },
+      {
+        "Username": "thientam2009",
+        "Password": "Admin@123$",
+        "Email": "thientam.thcsthptbacai@ninhthuan.edu.vn",
+        "Roles": [ "Administrator" ],
+        "Claims": [
+          {
+            "Type": "name",
+            "Value": "Nguyễn Hồ Thiện Tâm"
+          },
+          {
+            "Type": "given_name",
+            "Value": "Nguyễn Hồ Thiện"
+          },
+          {
+            "Type": "family_name",
+            "Value": "Tâm"
+          }
+        ]
+      }
+    ]
+  }
+}

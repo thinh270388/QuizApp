@@ -1,0 +1,78 @@
+﻿@page "/app/categories/details/{Id}"
+@using Examination.Shared.Categories
+@using Microsoft.Extensions.Logging
+@inject ICategoryService CategoryService
+@inject ILogger<ItemDetails> Logger
+@inject ISnackbar Snackbar
+@inject NavigationManager NavigationManager;
+
+
+<MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">@model.Name</MudText>
+<MudGrid>
+    <MudItem xs="12" sm="12" md="6">
+        <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+            <MudCard  Style="height:100%;">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">Vui lòng điền đầy đủ thông tin</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent Class="px-5">
+                    <DataAnnotationsValidator />
+                    <MudTextField Label="Tên" @bind-Value="model.Name" For="@(() => model.Name)" />
+                    <MudTextField Label="Đường dẫn URL" @bind-Value="model.UrlPath" For="@(() => model.UrlPath)" />
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Lưu</MudButton>
+                </MudCardActions>
+
+            </MudCard>
+        </EditForm>
+    </MudItem>
+</MudGrid>
+<MudOverlay Visible="loading" DarkBackground="true" Absolute="true">
+    <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
+</MudOverlay>
+@code {
+    bool success;
+    bool loading = false;
+    [Parameter]
+    public string Id { set; get; }
+    UpdateCategoryRequest model = new UpdateCategoryRequest();
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadItemDetails(Id);
+    }
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        loading = true;
+        success = await CategoryService.UpdateAsync(model);
+        if (success)
+        {
+            Snackbar.Add("Cập nhật mục thành công", Severity.Success);
+            NavigationManager.NavigateTo(UrlConstants.Categories);
+        }
+        else
+        {
+            Snackbar.Add("Tạo hành động không thành công", Severity.Error);
+        }
+        loading = false;
+        StateHasChanged();
+    }
+    private async Task LoadItemDetails(string id)
+    {
+        loading = true;
+        var result = await CategoryService.GetCategoryByIdAsync(Id);
+        if (result.IsSuccessed)
+        {
+            var category = result.ResultObj;
+            model.Id = category.Id;
+            model.Name = category.Name;
+            model.UrlPath = category.UrlPath;
+
+        }
+        loading = false;
+    }
+
+}

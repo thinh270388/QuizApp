@@ -1,0 +1,54 @@
+﻿@using Examination.Shared.ExamResults;
+@using Examination.Shared.Enums;
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
+<MudDialog>
+    <DialogContent>
+        <MudGrid>
+            <MudItem xs="12" sm="12" md="12">
+                <MudCard  Style="height:100%; width:100%">
+                    <MudCardContent Class="px-0">
+                        <MudGrid>
+                            <MudItem xs="12" md="12">
+                                <MudTable Items="@Questions" FixedHeader="true" FixedFooter="false" Height="300px">
+                                    <HeaderContent>
+                                        <MudTh>Nội dung câu hỏi</MudTh>
+                                        <MudTh>Mức độ</MudTh>
+                                        <MudTh>Kiểu câu hỏi</MudTh>
+                                        <MudTh>Kết quả</MudTh>
+                                    </HeaderContent>
+                                    <RowTemplate>
+                                        <MudTd DataLabel="Name">@context.Content</MudTd>
+                                        <MudTd DataLabel="Name">@(context.Level == Level.Hardest ? "Vận dụng cao" : context.Level == Level.Difficult ? "Vận dụng thấp" : context.Level == Level.Medium ? "Thông hiểu" : "Nhận biết")</MudTd>
+                                        <MudTd DataLabel="Name">@(context.QuestionType == QuestionType.SingleSelection ? "Một lựa chọn" : "Nhiều lựa chọn") </MudTd>
+                                        <MudTd DataLabel="Name">@(context.Result == true ? "Đúng" : "Sai")</MudTd>
+                                    </RowTemplate>
+                                </MudTable>
+                            </MudItem>
+                        </MudGrid>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="() => Cancel()">Đóng</MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+@code {
+    [CascadingParameter]
+    private Error Error { set; get; }
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public List<QuestionResultDto> Questions { get; set; } = new List<QuestionResultDto>();
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+} 
