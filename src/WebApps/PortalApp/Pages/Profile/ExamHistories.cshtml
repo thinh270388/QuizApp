@@ -35,7 +35,10 @@
         </div><!-- end breadcrumb-content -->
         <div class="section-block mb-5"></div>
         <div class="dashboard-heading mb-5">
-            <h3 class="fs-22 font-weight-semi-bold">Lịch sử làm bài kiểm tra</h3>
+            <h3 class="fs-22 font-weight-semi-bold">Lịch sử làm bài</h3>
+            <a>Tổng số bài đã làm: @Model.ExamResults.Items.Count()</a>
+           
+
         </div>
         <div class="table-responsive pb-4">
             <table class="table generic-table">
@@ -68,7 +71,7 @@
                                         {
                                             <span class="badge bg-warning text-white p-1">Bỏ qua</span>
                                         }
-                                        <span>@(item.ExamFinishDate.HasValue ? @item.ExamFinishDate.Value.ToString("f") : "N/A")</span>
+                                        <span>@(item.ExamFinishDate.HasValue ? @item.ExamFinishDate.Value.ToString("dd/MM/yyyy hh:mm") : "N/A")</span>
                                     </li>
                                     <li>
                                         <a href="/exam-details.html?id=@item.ExamId" class="text-black">@item.ExamTitle</a>

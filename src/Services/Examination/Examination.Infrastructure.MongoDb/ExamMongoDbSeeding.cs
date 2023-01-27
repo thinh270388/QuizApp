@@ -34,6 +34,7 @@ namespace Examination.Infrastructure
                 var categoryId6 = ObjectId.GenerateNewId().ToString();
                 var categoryId7 = ObjectId.GenerateNewId().ToString();
                 var categoryId8 = ObjectId.GenerateNewId().ToString();
+                var categoryId9 = ObjectId.GenerateNewId().ToString();
                 if (await database.GetCollection<Category>(Constants.Collections.Category).EstimatedDocumentCountAsync() == 0)
                 {
                     await database.GetCollection<Category>(Constants.Collections.Category)
@@ -47,26 +48,30 @@ namespace Examination.Infrastructure
                             new Category(categoryId6,"Quốc phòng 10","quoc-phong-10"),
                             new Category(categoryId7,"Sinh học 9","sinh-hoc-9"),
                             new Category(categoryId8,"Vật lý 7","vat-ly-7"),
+                            new Category(categoryId9,"Hóa học 8","hoa-hoc-8"),
                         });
                 }
                 if (await database.GetCollection<Question>(Constants.Collections.Question).EstimatedDocumentCountAsync() == 0)
                 {
                     await database.GetCollection<Question>(Constants.Collections.Question).InsertManyAsync(GetPredefinedQuestions(categoryId2));
+
+                    await database.GetCollection<Question>(Constants.Collections.Question).InsertManyAsync(GetPredefinedQuestions_QP10(categoryId6));
+                    await database.GetCollection<Question>(Constants.Collections.Question).InsertManyAsync(GetPredefinedQuestions_SinhHoc9(categoryId7));
+                    await database.GetCollection<Question>(Constants.Collections.Question).InsertManyAsync(GetPredefinedQuestions_VatLy7(categoryId8));
+                    await database.GetCollection<Question>(Constants.Collections.Question).InsertManyAsync(GetPredefinedQuestions_TinHoc12(categoryId1));
                 }
                 if (await database.GetCollection<Exam>(Constants.Collections.Exam).EstimatedDocumentCountAsync() == 0)
                 {
                     await database.GetCollection<Exam>(Constants.Collections.Exam).InsertManyAsync(GetPredefinedExams(categoryId2));
+
+                    await database.GetCollection<Exam>(Constants.Collections.Exam).InsertManyAsync(GetPredefinedExams_QP10(categoryId6));
+                    await database.GetCollection<Exam>(Constants.Collections.Exam).InsertManyAsync(GetPredefinedExams_SinhHoc9(categoryId7));
+                    await database.GetCollection<Exam>(Constants.Collections.Exam).InsertManyAsync(GetPredefinedExams_VatLy7(categoryId8));
+                    await database.GetCollection<Exam>(Constants.Collections.Exam).InsertManyAsync(GetPredefinedExams_TinHoc12(categoryId1));
                 }
 
                 // THÊM QP10
-                await database.GetCollection<Question>(Constants.Collections.Question).InsertManyAsync(GetPredefinedQuestions_QP10(categoryId6));
-                await database.GetCollection<Exam>(Constants.Collections.Exam).InsertManyAsync(GetPredefinedExams_QP10(categoryId6));
-                // THÊM SINH9
-                await database.GetCollection<Question>(Constants.Collections.Question).InsertManyAsync(GetPredefinedQuestions_SinhHoc9(categoryId7));
-                await database.GetCollection<Exam>(Constants.Collections.Exam).InsertManyAsync(GetPredefinedExams_SinhHoc9(categoryId7));
-                // THÊM LY7
-                await database.GetCollection<Question>(Constants.Collections.Question).InsertManyAsync(GetPredefinedQuestions_VatLy7(categoryId8));
-                await database.GetCollection<Exam>(Constants.Collections.Exam).InsertManyAsync(GetPredefinedExams_VatLy7(categoryId8));
+
             });
         }
 
@@ -75,7 +80,7 @@ namespace Examination.Infrastructure
             return new List<Exam>()
             {
                 // Tạo đề 1 - Tin 11
-                new Exam("Tin học 11 - Chủ đề 1 & 2", "Ôn tập Tin học 11",
+                new Exam("Tin học 11 - Chủ đề 1 & 2", "Năm học: 2022-2023",
                     "Nội dung ôn tập: Chủ đề 1 & 2",
                     10,
                     "10:00",
@@ -87,13 +92,13 @@ namespace Examination.Infrastructure
                     true, null, null),
 
                 // Tạo đề 2 - Tin 11
-                new Exam("Tin học 11 - Đề 2", "Ôn tập Tin học 11",
+                new Exam("Tin học 11 - Luyện tâp nhanh", "Năm học: 2022-2023",
                     "Ôn tập kiểm tra giữa kỳ 1",
                     5,
                     "05:00",
                     GetPredefinedQuestions(categoryId).Skip(5).Take(5).ToList(),
                     Level.Medium,
-                    true,
+                    false,
                     null,
                     3,
                     true, null, null)
@@ -149,13 +154,13 @@ namespace Examination.Infrastructure
                         new(ObjectId.GenerateNewId().ToString(),"bai tap 1")
                     },
                     "Tin 11 - Gợi ý giải"),
-                new(ObjectId.GenerateNewId().ToString(),"Trong Python, cho chương trình (4 dòng):\nx = 25 \t\t\t# Dòng 1\ny = 18, z = -32 \t# Dòng 2\na = 5; b = 15 \t\t# Dòng 3\nc, d = 10, 20 \t\t# Dòng 4\nKhi thực hiện, chương trình trên báo lỗi sai tại dòng?\n", QuestionType.SingleSelection, Level.Medium, categoryId,
+                new(ObjectId.GenerateNewId().ToString(),"Trong Python, kết quả in ra màn hình cuar câu lệnh: print(7*6, '= 7 x 6')", QuestionType.SingleSelection, Level.Medium, categoryId,
                     new List<Answer>()
                     {
-                        new(ObjectId.GenerateNewId().ToString(), "Dòng 1."),
-                        new(ObjectId.GenerateNewId().ToString(), "Dòng 2.", true),
-                        new(ObjectId.GenerateNewId().ToString(), "Dòng 3."),
-                        new(ObjectId.GenerateNewId().ToString(), "Dòng 4.")
+                        new(ObjectId.GenerateNewId().ToString(), "7 * 6 = 42"),
+                        new(ObjectId.GenerateNewId().ToString(), "42 = 7 x 6", true),
+                        new(ObjectId.GenerateNewId().ToString(), "7 x 6 = 42"),
+                        new(ObjectId.GenerateNewId().ToString(), "42 = 7 * 6")
                     },
                     "Tin 11 - Gợi ý giải"),
                 new(ObjectId.GenerateNewId().ToString(),"Trong Python, ký hiệu ‘int’ là dữ liệu kiểu:", QuestionType.SingleSelection, Level.Easy, categoryId,
@@ -244,7 +249,7 @@ namespace Examination.Infrastructure
             return new List<Exam>()
             {
                 // Tạo đề Quốc phòng 10
-                new Exam("Quốc phòng 10 - Ôn tập giữa kỳ 1", "Ôn tập Quốc phòng 10",
+                new Exam("Quốc phòng 10 - Ôn tập giữa kỳ 1", "Năm học: 2022-2023",
                     "Ôn tập kiểm tra giữa kỳ 1",
                     15,
                     "10:00",
@@ -417,7 +422,7 @@ namespace Examination.Infrastructure
             return new List<Exam>()
             {
                 // Tạo đề Quốc phòng 10
-                new Exam("Sinh học 9 - Ôn tập cuối kỳ 1", "Ôn tập Sinh học 9",
+                new Exam("Sinh học 9 - Ôn tập cuối kỳ 1", "Năm học: 2022-2023",
                     "Ôn tập kiểm tra cuối kỳ 1, 2022-2023",
                     10,
                     "10:00",
@@ -540,7 +545,7 @@ namespace Examination.Infrastructure
             return new List<Exam>()
             {
                 // Vật lý 7
-                new Exam("Vật lý 7 - Ôn tập cuối kỳ 1", "Ôn tập Vật lý 7",
+                new Exam("Vật lý 7 - Ôn tập cuối kỳ 1", "Năm học: 2022-2023",
                     "Ôn tập kiểm tra cuối kỳ 1, 2022-2023",
                     8,
                     "08:00",
@@ -653,6 +658,120 @@ namespace Examination.Infrastructure
                         new(ObjectId.GenerateNewId().ToString(),"20m")
                     },
                     "Vật lý 7 - Gợi ý giải (nếu có)")
+             };
+        }
+
+        private List<Exam> GetPredefinedExams_TinHoc12(string categoryId)
+        {
+            return new List<Exam>()
+            {
+                // Vật lý 7
+                new Exam("Tin học 12 - Ôn tập giữa kỳ", "Năm học: 2022-2023",
+                    "Ôn tập kiểm tra cuối kỳ 1, 2022-2023",
+                    10,
+                    "05:00",
+                    GetPredefinedQuestions_TinHoc12(categoryId).Take(10).ToList(),
+                    Level.Medium,
+                    true,
+                    null,
+                    5,
+                    true, null, null)
+            };
+        }
+        private List<Question> GetPredefinedQuestions_TinHoc12(string categoryId)
+        {
+            return new List<Question>()
+            {
+                new(ObjectId.GenerateNewId().ToString(),"Hệ quản trị CSDL là:", QuestionType.SingleSelection, Level.Easy, categoryId,
+                    new List<Answer>()
+                    {
+                        new(ObjectId.GenerateNewId().ToString(),"Phần mềm dùng tạo lập, cập nhật, lưu trữ và khai thác thông tin của CSDL", true),
+                        new(ObjectId.GenerateNewId().ToString(),"Phần mềm dùng tạo lập, lưu trữ một CSDL"),
+                        new(ObjectId.GenerateNewId().ToString(),"Phần mềm để thao tác và xử lý các đối tượng trong CSDL"),
+                        new(ObjectId.GenerateNewId().ToString(),"Phần mềm dùng tạo lập CSDL")
+                    },
+                    "Tin học 12 - Đọc SGK từ bài 1-7"),
+                new(ObjectId.GenerateNewId().ToString(),"Xét công tác quản lí hồ sơ. Trong số các công việc sau, những việc nào không thuộc nhóm thao tác cập nhật hồ sơ?", QuestionType.SingleSelection, Level.Medium, categoryId,
+                    new List<Answer>()
+                    {
+                        new(ObjectId.GenerateNewId().ToString(),"Xóa một hồ sơ"),
+                        new(ObjectId.GenerateNewId().ToString(),"Thống kê và lập báo cáo", true),
+                        new(ObjectId.GenerateNewId().ToString(),"Thêm hai hồ sơ"),
+                        new(ObjectId.GenerateNewId().ToString(),"Sửa tên trong một hồ sơ")
+                    },
+                    "Tin học 12 - Đọc SGK từ bài 1-7"),
+                 new(ObjectId.GenerateNewId().ToString(),"Quy trình xây dựng CSDL là:", QuestionType.SingleSelection, Level.Easy, categoryId,
+                    new List<Answer>()
+                    {
+                        new(ObjectId.GenerateNewId().ToString(),"Khảo sát --> Thiết kế --> Kiểm thử", true),
+                        new(ObjectId.GenerateNewId().ToString(),"Khảo sát --> Kiểm thử --> Thiết kế"),
+                        new(ObjectId.GenerateNewId().ToString(),"Thiết kế --> Kiểm thử --> Khảo sát"),
+                        new(ObjectId.GenerateNewId().ToString(),"Thiết kế --> Khảo sát --> Kiểm thử")
+                    },
+                    "Tin học 12 - Đọc SGK từ bài 1-7"),
+                new(ObjectId.GenerateNewId().ToString(),"Người nào đã tạo ra các phần mềm ứng dụng đáp ứng nhu cầu khai thác thông tin từ CSDL?", QuestionType.SingleSelection, Level.Easy, categoryId,
+                    new List<Answer>()
+                    {
+                        new(ObjectId.GenerateNewId().ToString(),"Người dùng"),
+                        new(ObjectId.GenerateNewId().ToString(),"Người quản trị CSDL"),
+                        new(ObjectId.GenerateNewId().ToString(),"Người bảo hành các thiết bị phần cứng"),
+                        new(ObjectId.GenerateNewId().ToString(),"Người lập trình ứng dụng", true)
+                    },
+                    "Tin học 12 - Đọc SGK từ bài 1-7"),
+                new(ObjectId.GenerateNewId().ToString(),"Đối tượng nào tạo giao diện thuận tiện cho việc nhập hoặc hiển thị thông tin?", QuestionType.SingleSelection, Level.Easy, categoryId,
+                    new List<Answer>()
+                    {
+                        new(ObjectId.GenerateNewId().ToString(),"Table"),
+                        new(ObjectId.GenerateNewId().ToString(),"Query"),
+                        new(ObjectId.GenerateNewId().ToString(),"Form", true),
+                        new(ObjectId.GenerateNewId().ToString(),"Report")
+                    },
+                    "Tin học 12 - Đọc SGK từ bài 1-7"),
+                new(ObjectId.GenerateNewId().ToString(),"Phần mở rộng của tệp trong Access 2019 là", QuestionType.SingleSelection, Level.Easy, categoryId,
+                    new List<Answer>()
+                    {
+                        new(ObjectId.GenerateNewId().ToString(),"ACCDB", true),
+                        new(ObjectId.GenerateNewId().ToString(),"DOCX"),
+                        new(ObjectId.GenerateNewId().ToString(),"XLSX"),
+                        new(ObjectId.GenerateNewId().ToString(),"TXT")
+                    },
+                    "Tin học 12 - Đọc SGK từ bài 1-7"),
+                new(ObjectId.GenerateNewId().ToString(),"Chọn câu sai trong các câu sau:", QuestionType.SingleSelection, Level.Medium, categoryId,
+                    new List<Answer>()
+                    {
+                        new(ObjectId.GenerateNewId().ToString(),"Access có khả năng cung cấp công cụ tạo lập CSDL"),
+                        new(ObjectId.GenerateNewId().ToString(),"Access không hỗ trợ lưu trữ CSDL trên các thiết bị nhớ", true),
+                        new(ObjectId.GenerateNewId().ToString(),"Access cho phép cập nhật dữ liệu, tạo báo cáo, thống kê, tổng hợp"),
+                        new(ObjectId.GenerateNewId().ToString(),"CSDL xây dựng trong Access gồm các bảng và liên kết giữa các bảng")
+                    },
+                    "Tin học 12 - Đọc SGK từ bài 1-7"),
+                new(ObjectId.GenerateNewId().ToString(),"Muốn sắp xếp các bản ghi thứ tự giảm dần, thực hiện lệnh nào?", QuestionType.SingleSelection, Level.Easy, categoryId,
+                    new List<Answer>()
+                    {
+                        new(ObjectId.GenerateNewId().ToString(),"Home --> Sort Ascending"),
+                        new(ObjectId.GenerateNewId().ToString(),"File --> Sort Ascending"),
+                        new(ObjectId.GenerateNewId().ToString(),"Home --> Sort Descending", true),
+                        new(ObjectId.GenerateNewId().ToString(),"File --> Sort Descending")
+                    },
+                    "Tin học 12 - Đọc SGK từ bài 1-7"),
+                new(ObjectId.GenerateNewId().ToString(),"Khi liên kết bị sai, ta có thể sửa lại bằng cách chọn đường liên kết cần sửa, sau đó:", QuestionType.SingleSelection, Level.Easy, categoryId,
+                    new List<Answer>()
+                    {
+                        new(ObjectId.GenerateNewId().ToString(),"Nháy đúp vào đường liên kết --> Chọn lại trường cần liên kết", true),
+                        new(ObjectId.GenerateNewId().ToString(),"Edit --> Relationships"),
+                        new(ObjectId.GenerateNewId().ToString(),"Tools --> Relationships --> Change Field"),
+                        new(ObjectId.GenerateNewId().ToString(),"Nhấn phímDelete --> Yes")
+                    },
+                    "Tin học 12 - Đọc SGK từ bài 1-7"),
+                new(ObjectId.GenerateNewId().ToString(),"Trong Access, biểu thức điều kiện nào sau đây là sai?", QuestionType.SingleSelection, Level.Medium, categoryId,
+                    new List<Answer>()
+                    {
+                        new(ObjectId.GenerateNewId().ToString(),"[GT]=”Nam” and [Tin]>=8.5"),
+                        new(ObjectId.GenerateNewId().ToString(),"[SoDan]/[DienTich]"),
+                        new(ObjectId.GenerateNewId().ToString(),"[LUONG]*0.1"),
+                        new(ObjectId.GenerateNewId().ToString(),"([TOAN] + [VAN]):2", true)
+                    },
+                    "Tin học 12 - Đọc SGK từ bài 1-7"),
              };
         }
     }

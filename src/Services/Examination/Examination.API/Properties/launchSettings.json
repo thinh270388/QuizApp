@@ -3,7 +3,7 @@
   "profiles": {
     "Examination.API": {
       "commandName": "Project",
-      "dotnetRunMessages": "true",
+      "dotnetRunMessages": true,
       "launchBrowser": false,
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:5002",

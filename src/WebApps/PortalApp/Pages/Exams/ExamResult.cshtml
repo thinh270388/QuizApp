@@ -45,6 +45,7 @@
             <div class="quiz-action-content d-flex flex-wrap align-items-center justify-content-between">
                 <ul class="quiz-nav d-flex flex-wrap align-items-center">
                     <li><i class="la la-check-circle fs-17 mr-2"></i>Kết quả: @Model.ExamResult.QuestionResults.Count(x => x.Result == true)/@Model.ExamResult.QuestionResults.Count câu</li>
+                    <li><i class="la la-check-circle fs-17 mr-2"></i>Số câu cần đạt: @Model.Exam.NumberOfQuestionCorrectForPass</li>
                     <li><i class="la la-clock fs-17 mr-2"></i>Thời gian (phút): @Model.Exam.Duration</li>
                     <li><i class="la la-bar-chart fs-17 mr-2"></i>Cấp độ: @(Model.Exam.Level == Examination.Shared.Enums.Level.Difficult ? "Khó" : Model.Exam.Level == Examination.Shared.Enums.Level.Medium ? "Trung bình" : "Dễ")</li>
                 </ul>

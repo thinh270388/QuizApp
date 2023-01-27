@@ -1,17 +1,16 @@
-using System.Net;
-using System.Threading.Tasks;
 using Examination.Application.Commands.V1.Exams.CreateExam;
 using Examination.Application.Commands.V1.Exams.DeleteExam;
 using Examination.Application.Commands.V1.Exams.UpdateExam;
+using Examination.Application.Queries.V1.Exams.GetAllExams;
 using Examination.Application.Queries.V1.Exams.GetExamById;
 using Examination.Application.Queries.V1.Exams.GetExamsPaging;
-using Examination.Application.Queries.V1.Exams.GetAllExams;
 using Examination.Shared.Exams;
-using Examination.Shared.Questions;
 using Examination.Shared.SeedWork;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Examination.API.Controllers.V1
 {

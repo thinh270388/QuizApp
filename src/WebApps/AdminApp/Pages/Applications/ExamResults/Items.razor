@@ -34,7 +34,7 @@
                     <MudItem xs="12" md="12">
                         <MudTable Items="@Elements" FixedHeader="true" FixedFooter="false" Height="400px">
                             <HeaderContent>
-                                <MudTh>Tên đăng nhập</MudTh>
+                                @*<MudTh>Tên đăng nhập</MudTh>*@
                                 <MudTh>Họ và tên</MudTh>
                                 <MudTh>Email</MudTh>
                                 <MudTh>Tên bài kiểm tra</MudTh>
@@ -46,8 +46,8 @@
                                 <MudTh>Thao tác</MudTh>
                             </HeaderContent>
                             <RowTemplate>                                
-                                <MudTd DataLabel="Name">@context.UserId @context.UserName @context.Id</MudTd>
-                                <MudTd DataLabel="Name">@context.FullName</MudTd>
+@*                                <MudTd DataLabel="Name">@context.UserId @context.UserName @context.Id</MudTd>
+*@                                <MudTd DataLabel="Name">@context.FullName</MudTd>
                                 <MudTd DataLabel="Name">@context.Email</MudTd>
                                 <MudTd DataLabel="Name">@context.ExamTitle</MudTd>
                                 <MudTd DataLabel="Name">@context.ExamStartDate.ToString("dd/MM/yyyy hh:mm")</MudTd>
